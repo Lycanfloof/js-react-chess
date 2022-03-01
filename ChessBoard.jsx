@@ -8,4 +8,7 @@ class ChessBoard extends React.Component {
     }
 }
 
-ReactDOM.render();
+ReactDOM.render(
+    <ChessBoard/>,
+    document.getElementById('chess-board')
+);
