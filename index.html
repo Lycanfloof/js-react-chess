@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <title>Chess Vision</title>
         <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -9,5 +10,23 @@
 
     <body>
         
+        <div id="chess-board"></div>
+        <script type="text/babel">
+            class ChessBoard extends React.Component {
+                render() {
+                    return (
+                        <div>
+                            Hello chess
+                        </div>
+                    );
+                }
+            }
+
+            ReactDOM.render(
+                <ChessBoard/>,
+                document.getElementById('chess-board')
+            );
+        </script>
+
     </body>
 </html>
