@@ -14,6 +14,10 @@
     <div id="chess-board"></div>
     <script type="text/babel">
 
+        const generateRandomNumber = (min, max) => {
+            return ~~(min + Math.random() * (max - min));
+        }
+
         class Square extends React.Component {
 
             constructor(props) {
@@ -56,7 +60,7 @@
                     let columns = [];
                     for (let j = 0; j < this.props.boardLength; j++) {
                         let character = String.fromCharCode(j + 65);
-                        columns.push(<Square checkBoardClick={this.props.checkBoardClick} key={character + i} value={character + i} />);
+                        columns.push(<Square checkBoardClick={this.props.checkBoardClick} key={"B" + character + i} value={character + i} />);
                     }
                     rows.push(this.renderColumns(columns));
                 }
@@ -87,20 +91,21 @@
             render() {
                 return (
                     <div>
-                        {/* We might want to find another way to place /n */}
-                        <h3 />
-                        {/* Sample /n */}
-                        <div>Timer: {this.props.timer}</div>
-                        <h3 />
-                        {this.props.currentClicks.map(
-                            values =>
-                                <div key={this.props.currentClicks.indexOf(values)}>
-                                    {values[0]} | {values[1]} | {values[2]}
-                                </div>)}
                         <h3 />
                         <button disabled={this.props.hasBeenStarted} onClick={() => this.props.startGame()}>
                             Start Game!
                         </button>
+                        {/* We might want to find another way to place /n */}
+                        <h3 />
+                        {/* Sample /n */}
+                        <div>Timer: {this.props.timer}</div>
+                        {this.props.hasBeenStarted ? <div>Position: {this.props.currentPosition}</div> : null}
+                        <h3 />
+                        {this.props.currentClicks.map(
+                            values =>
+                                <div key={"S" + this.props.currentClicks.indexOf(values)}>
+                                    {values[0]} | {values[1]} | {values[2]}
+                                </div>)}
                     </div>
                 );
             }
@@ -114,7 +119,7 @@
                 this.state = {
                     timer: props.timer,
                     clickTimer: props.timer,
-                    currentPosition: "A1",
+                    currentPosition: "" + String.fromCharCode(generateRandomNumber(65, 72)) + generateRandomNumber(1, 8),
                     currentClicks: [],
                     boardLength: props.boardLength,
                     hasBeenStarted: false
@@ -144,7 +149,8 @@
                     }
                     this.state.currentClicks.push(score)
                     this.setState(state => ({
-                        clickTimer: state.timer
+                        clickTimer: state.timer,
+                        currentPosition: "" + String.fromCharCode(generateRandomNumber(65, 72)) + generateRandomNumber(1, 8)
                     }));
                 }
             }
