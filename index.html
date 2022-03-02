@@ -8,14 +8,26 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-
         .square {
             width: 0;
             height: 0;
-            padding: 6%;
+            padding: 5%;
             background: #fff;
             border: 1px solid #999;
             font-size: 18px;
+            margin-right: -1px;
+            margin-top: -1px;
+        }
+
+        .boardLabel {
+            width: 0;
+            height: 0;
+            padding-left: 5%;
+            padding-right: 5%;
+            background: #fff;
+            border: 0px;
+            margin: 1px;
+            font-size: 14px;
             margin-right: -1px;
             margin-top: -1px;
         }
@@ -32,7 +44,6 @@
             width: 15%;
             float: left;
         }
-
     </style>
 </head>
 
@@ -66,6 +77,12 @@
 
         }
 
+        class BoardLabel extends React.Component {
+            render() {
+                return <button className="boardLabel">{this.props.value}</button>;
+            }
+        }
+
         class ChessBoard extends React.Component {
 
             constructor(props) {
@@ -84,12 +101,20 @@
                 let rows = [];
                 for (let i = this.props.boardLength; i > 0; i--) {
                     let columns = [];
+                    columns.push(<BoardLabel value={i} />);
                     for (let j = 0; j < this.props.boardLength; j++) {
                         let character = String.fromCharCode(j + 65);
                         columns.push(<Square checkBoardClick={this.props.checkBoardClick} key={"B" + character + i} value={character + i} />);
                     }
                     rows.push(this.renderColumns(columns));
                 }
+                let columns = [];
+                columns.push(<BoardLabel value={""}/>);
+                for(let i = 0; i < this.props.boardLength; i++){
+                    let character = String.fromCharCode(i + 65);
+                    columns.push(<BoardLabel value={character}/>);
+                }
+                rows.push(columns);
                 return rows.map(
                     (value) =>
                         <div key={"B" + (this.props.boardLength - rows.indexOf(value))}>
