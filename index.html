@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Chess Vision</title>
+        <title>Chess-Vision</title>
         <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -16,7 +16,9 @@
             class Square extends React.Component {
                 
                 onClickHandler(){
-
+                    //We won't use this
+                    //It is only here to avoid an exception for now
+                    //Replace with checkOnBoardClick from Game Component
                 }
 
                 render(){
@@ -26,6 +28,7 @@
                     </button>
                     );
                 }
+
             }
             
             class ChessBoard extends React.Component {
@@ -63,31 +66,106 @@
                         </div>
                     );
                 }
+
             }
 
             class Menu extends React.Component {
+
+                onClickHandler(){
+                    //We won't use this
+                    //It is only here to avoid an exception for now
+                    //Replace with startGame from Game Component
+                }
+                
                 render(){
                     return(
-                        <div></div>
+                        <div>
+                            {/* We might want to find another way to place /n */}
+                            <h3/>
+                            {/* Sample /n */}
+                            <div>Timer: 0:20</div>
+                            <h3/>
+                            <button onClick={this.onClickHandler}>
+                                Start Game!
+                            </button>
+                        </div>
                     );
                 }
+
             }
 
             class Game extends React.Component {
+
+                constructor(props){
+                    super(props);
+                    this.state = {
+                        timer: props.timer,
+                        boardLength: props.boardLength,
+                        hasBeenStarted: false
+                    };
+                }
+
+                startGame(){
+                    this.setState(state => ({
+                        hasBeenStarted: true
+                    }));
+                    //Clear past information
+                }
+
+                checkBoardClick(){
+                    //Check if the current position matches with the clicked one
+                    //If it matches, we give the player a point
+                    //If it doesn't, we give the player a miss
+                }
+
+                finishGame(){
+                    //Added in case we want to do something when the game finishes
+                }
+
+                tick(){
+                    if(this.state.timer >= 0){
+                        this.setState(state => ({
+                            timer: this.state.timer - 1
+                        }));
+                    }else{
+                        //We might want to use finishGame method here depending on what we want to do
+                        this.setState(state => ({
+                            hasBeenStarted: false
+                        }));
+                    }
+                }
+
+                componentDidMount() {
+                    if(this.state.hasBeenStarted === true){
+				        this.interval = setInterval(() => this.tick(), 1000);
+                    }
+			    }
+
+                componentWillUnmount() {
+                    clearInterval(this.interval);
+                }
+
                 render(){
                     return(
                         //We might like to implement a column layout here!
                         <div>
-                            <div>{this.props.left}</div>
-                            <div>{this.props.right}</div>
+                            <div>
+                                <ChessBoard boardLength={this.state.boardLength} checkBoardClick={this.checkBoardClick}/>
+                            </div>
+                            <div>
+                                <Menu startGame={this.startGame}/>
+                            </div>
                         </div>
                     );
                 }
+
             }
+
             ReactDOM.render(
-                <Game left={<ChessBoard boardLength={8}/>} right={<Menu/>}/>,
+                <Game timer={20} boardLength={8}/>,
                 document.getElementById('chess-board')
             );
+            
         </script>
 
     </body>
