@@ -12,11 +12,59 @@
         
         <div id="chess-board"></div>
         <script type="text/babel">
+            
+            class Square extends React.Component {
+                constructor(props){
+                    super(props);
+                }
+                
+                onClickHandler(){
+
+                }
+
+                render(){
+                    return(
+                    <button className="square" onClick={this.onClickHandler()}>
+                        A
+                    </button>
+                    );
+                }
+            }
+            
             class ChessBoard extends React.Component {
+                constructor(props){
+                    super(props);
+                }
+
+                renderColumns(columns){
+                    return(
+                        <div>
+                            {columns}
+                        </div>
+                    );
+                }
+                
+                renderRows(){
+                    let rows = [];
+                    for(let i = 0; i < 8; i++){
+                        let columns = [];
+                        for(let j = 0; j < 8; j++){
+                            columns.push(<Square key={""+i+j}/>);
+                        }
+                        rows.push(this.renderColumns(columns));
+                    }
+                    return rows.map(
+                        (value) =>
+                        <div key={rows.indexOf(value)}>
+                            {value}
+                        </div>
+                    );
+                }
+                
                 render() {
                     return (
                         <div>
-                            Hello chess
+                            {this.renderRows()}
                         </div>
                     );
                 }
