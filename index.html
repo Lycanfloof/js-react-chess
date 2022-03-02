@@ -149,7 +149,7 @@
                         {/* We might want to find another way to place /n */}
                         <h3 />
                         {/* Sample /n */}
-                        <div>Timer: {Math.floor(this.props.timer/60)}:{this.props.timer%60}</div>
+                        <div>Timer: {~~(this.props.timer/60)}:{this.props.timer%60}</div>
                         {this.props.hasBeenStarted ? <div>Position: {this.props.currentPosition}</div> : null}
                         <h3 />
                         <div className='score'>
