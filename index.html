@@ -7,6 +7,33 @@
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+
+        .square {
+            width: 0;
+            height: 0;
+            padding: 6%;
+            background: #fff;
+            border: 1px solid #999;
+            font-size: 18px;
+            margin-right: -1px;
+            margin-top: -1px;
+        }
+
+        .board {
+            margin-left: 2.5%;
+            width: 40%;
+            height: 100%;
+            float: left;
+        }
+
+        .menu {
+            margin-left: 2.5%;
+            width: 15%;
+            float: left;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -33,7 +60,6 @@
             render() {
                 return (
                     <button className="square" onClick={() => this.props.checkBoardClick(this.props.value)}>
-                        {this.props.value}
                     </button>
                 );
             }
@@ -188,11 +214,11 @@
             render() {
                 return (
                     //We might like to implement a column layout here!
-                    <div>
-                        <div>
+                    <div className="gameContainer">
+                        <div className="board">
                             <ChessBoard boardLength={this.state.boardLength} checkBoardClick={this.checkBoardClick} />
                         </div>
-                        <div>
+                        <div className="menu">
                             <Menu timer={this.state.timer} currentPosition={this.state.currentPosition} currentClicks={this.state.currentClicks}
                                 hasBeenStarted={this.state.hasBeenStarted} startGame={this.startGame} />
                         </div>
