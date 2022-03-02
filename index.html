@@ -14,9 +14,6 @@
         <script type="text/babel">
             
             class Square extends React.Component {
-                constructor(props){
-                    super(props);
-                }
                 
                 onClickHandler(){
 
@@ -32,9 +29,6 @@
             }
             
             class ChessBoard extends React.Component {
-                constructor(props){
-                    super(props);
-                }
 
                 renderColumns(columns){
                     return(
@@ -71,8 +65,27 @@
                 }
             }
 
+            class Menu extends React.Component {
+                render(){
+                    return(
+                        <div></div>
+                    );
+                }
+            }
+
+            class Game extends React.Component {
+                render(){
+                    return(
+                        //We might like to implement a column layout here!
+                        <div>
+                            <div>{this.props.left}</div>
+                            <div>{this.props.right}</div>
+                        </div>
+                    );
+                }
+            }
             ReactDOM.render(
-                <ChessBoard boardLength={8}/>,
+                <Game left={<ChessBoard boardLength={8}/>} right={<Menu/>}/>,
                 document.getElementById('chess-board')
             );
         </script>
