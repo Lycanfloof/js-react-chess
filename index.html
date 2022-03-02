@@ -28,7 +28,7 @@
 
             render() {
                 return (
-                    <button className="square" onClick={this.onClickHandler()}>
+                    <button className="square" onClick={() => this.props.checkBoardClick(this.props.value)}>
                         {this.props.value}
                     </button>
                 );
@@ -56,13 +56,13 @@
                     let columns = [];
                     for (let j = 0; j < this.props.boardLength; j++) {
                         let character = String.fromCharCode(j + 65);
-                        columns.push(<Square key={character + i} value={character + i} />);
+                        columns.push(<Square checkBoardClick={this.props.checkBoardClick} key={character + i} value={character + i} />);
                     }
                     rows.push(this.renderColumns(columns));
                 }
                 return rows.map(
                     (value) =>
-                        <div key={this.props.boardLength - rows.indexOf(value)}>
+                        <div key={"B" + (this.props.boardLength - rows.indexOf(value))}>
                             {value}
                         </div>
                 );
@@ -92,7 +92,13 @@
                         {/* Sample /n */}
                         <div>Timer: {this.props.timer}</div>
                         <h3 />
-                        <button onClick={() => this.props.startGame()}>
+                        {this.props.currentClicks.map(
+                            values =>
+                                <div key={this.props.currentClicks.indexOf(values)}>
+                                    {values[0]} | {values[1]} | {values[2]}
+                                </div>)}
+                        <h3 />
+                        <button disabled={this.props.hasBeenStarted} onClick={() => this.props.startGame()}>
                             Start Game!
                         </button>
                     </div>
@@ -107,6 +113,9 @@
                 super(props);
                 this.state = {
                     timer: props.timer,
+                    clickTimer: props.timer,
+                    currentPosition: "A1",
+                    currentClicks: [],
                     boardLength: props.boardLength,
                     hasBeenStarted: false
                 };
@@ -119,10 +128,25 @@
                 //Clear past information
             }
 
-            checkBoardClick = () => {
+            checkBoardClick = (position) => {
                 //Check if the current position matches with the clicked one
                 //If it matches, we give the player a point
                 //If it doesn't, we give the player a miss
+                if (this.state.hasBeenStarted) {
+                    let score = [];
+                    let finalTime = this.state.clickTimer - this.state.timer;
+                    score.push(position);
+                    score.push(finalTime);
+                    if (this.state.currentPosition === position) {
+                        score.push("✓");
+                    } else {
+                        score.push("X");
+                    }
+                    this.state.currentClicks.push(score)
+                    this.setState(state => ({
+                        clickTimer: state.timer
+                    }));
+                }
             }
 
             finishGame = () => {
@@ -130,7 +154,7 @@
             }
 
             tick() {
-                if (this.state.hasBeenStarted === true) {
+                if (this.state.hasBeenStarted) {
                     if (this.state.timer > 0) {
                         this.setState(state => ({
                             timer: this.state.timer - 1
@@ -139,6 +163,7 @@
                         //We might want to use finishGame method here depending on what we want to do
                         this.setState(state => ({
                             timer: this.props.timer,
+                            clickTimer: this.props.timer,
                             hasBeenStarted: false
                         }));
                     }
@@ -161,7 +186,8 @@
                             <ChessBoard boardLength={this.state.boardLength} checkBoardClick={this.checkBoardClick} />
                         </div>
                         <div>
-                            <Menu timer={this.state.timer} startGame={this.startGame} />
+                            <Menu timer={this.state.timer} currentPosition={this.state.currentPosition} currentClicks={this.state.currentClicks}
+                                hasBeenStarted={this.state.hasBeenStarted} startGame={this.startGame} />
                         </div>
                     </div>
                 );
