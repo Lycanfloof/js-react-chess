@@ -101,7 +101,7 @@
                 let rows = [];
                 for (let i = this.props.boardLength; i > 0; i--) {
                     let columns = [];
-                    columns.push(<BoardLabel value={i} />);
+                    columns.push(<BoardLabel key={i} value={i} />);
                     for (let j = 0; j < this.props.boardLength; j++) {
                         let character = String.fromCharCode(j + 65);
                         columns.push(<Square checkBoardClick={this.props.checkBoardClick} key={"B" + character + i} value={character + i} />);
@@ -109,10 +109,10 @@
                     rows.push(this.renderColumns(columns));
                 }
                 let columns = [];
-                columns.push(<BoardLabel value={""}/>);
-                for(let i = 0; i < this.props.boardLength; i++){
+                columns.push(<BoardLabel key={"."} value={""} />);
+                for (let i = 0; i < this.props.boardLength; i++) {
                     let character = String.fromCharCode(i + 65);
-                    columns.push(<BoardLabel value={character}/>);
+                    columns.push(<BoardLabel value={character} />);
                 }
                 rows.push(columns);
                 return rows.map(
@@ -152,6 +152,9 @@
                         <div>Timer: {this.props.timer}</div>
                         {this.props.hasBeenStarted ? <div>Position: {this.props.currentPosition}</div> : null}
                         <h3 />
+                        <div className='score'>
+                            Score: {this.props.finalScore}
+                        </div>
                         {this.props.currentClicks.map(
                             values =>
                                 <div key={"S" + this.props.currentClicks.indexOf(values)}>
@@ -173,14 +176,16 @@
                     currentPosition: "" + String.fromCharCode(generateRandomNumber(65, 72)) + generateRandomNumber(1, 8),
                     currentClicks: [],
                     boardLength: props.boardLength,
-                    hasBeenStarted: false
+                    hasBeenStarted: false,
+                    finalScore: 0
                 };
             }
 
             startGame = () => {
                 this.setState(() => ({
                     hasBeenStarted: true,
-                    currentClicks: []
+                    currentClicks: [],
+                    finalScore: 0
                 }));
                 //Clear past information
             }
@@ -196,6 +201,9 @@
                     score.push(finalTime);
                     if (this.state.currentPosition === position) {
                         score.push("✓");
+                        this.setState(state => ({
+                            finalScore: state.finalScore + 1
+                        }));
                     } else {
                         score.push("X");
                     }
@@ -245,7 +253,8 @@
                         </div>
                         <div className="menu">
                             <Menu timer={this.state.timer} currentPosition={this.state.currentPosition} currentClicks={this.state.currentClicks}
-                                hasBeenStarted={this.state.hasBeenStarted} startGame={this.startGame} />
+                                hasBeenStarted={this.state.hasBeenStarted} startGame={this.startGame} 
+                                finalScore={this.state.finalScore}/>
                         </div>
                     </div>
                 );
