@@ -25,7 +25,7 @@
                 render(){
                     return(
                     <button className="square" onClick={this.onClickHandler()}>
-                        A
+                        {this.props.value}
                     </button>
                     );
                 }
@@ -46,16 +46,16 @@
                 
                 renderRows(){
                     let rows = [];
-                    for(let i = 0; i < 8; i++){
+                    for(let i = 0; i < this.props.boardLength; i++){
                         let columns = [];
-                        for(let j = 0; j < 8; j++){
-                            columns.push(<Square key={""+i+j}/>);
+                        for(let j = 0; j < this.props.boardLength; j++){
+                            columns.push(<Square key={""+String.fromCharCode(j+65)+i} value={""+String.fromCharCode(j+65)+i}/>);
                         }
                         rows.push(this.renderColumns(columns));
                     }
                     return rows.map(
                         (value) =>
-                        <div key={rows.indexOf(value)}>
+                        <div key={String.fromCharCode(rows.indexOf(value)+65)}>
                             {value}
                         </div>
                     );
@@ -71,7 +71,7 @@
             }
 
             ReactDOM.render(
-                <ChessBoard/>,
+                <ChessBoard boardLength={8}/>,
                 document.getElementById('chess-board')
             );
         </script>
