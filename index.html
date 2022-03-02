@@ -149,7 +149,7 @@
                         {/* We might want to find another way to place /n */}
                         <h3 />
                         {/* Sample /n */}
-                        <div>Timer: {this.props.timer}</div>
+                        <div>Timer: {Math.floor(this.props.timer/60)}:{this.props.timer%60}</div>
                         {this.props.hasBeenStarted ? <div>Position: {this.props.currentPosition}</div> : null}
                         <h3 />
                         <div className='score'>
@@ -263,7 +263,7 @@
         }
 
         ReactDOM.render(
-            <Game timer={20} boardLength={8} />,
+            <Game timer={60} boardLength={8} />,
             document.getElementById('chess-board')
         );
 
