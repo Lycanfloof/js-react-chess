@@ -46,16 +46,17 @@
                 
                 renderRows(){
                     let rows = [];
-                    for(let i = 0; i < this.props.boardLength; i++){
+                    for(let i = this.props.boardLength; i > 0; i--){
                         let columns = [];
                         for(let j = 0; j < this.props.boardLength; j++){
-                            columns.push(<Square key={""+String.fromCharCode(j+65)+i} value={""+String.fromCharCode(j+65)+i}/>);
+                            let character = String.fromCharCode(j + 65);
+                            columns.push(<Square key={character + i} value={character + i}/>);
                         }
                         rows.push(this.renderColumns(columns));
                     }
                     return rows.map(
                         (value) =>
-                        <div key={String.fromCharCode(rows.indexOf(value)+65)}>
+                        <div key={this.props.boardLength - rows.indexOf(value)}>
                             {value}
                         </div>
                     );
