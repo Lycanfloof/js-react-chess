@@ -112,7 +112,7 @@
                 columns.push(<BoardLabel key={"."} value={""} />);
                 for (let i = 0; i < this.props.boardLength; i++) {
                     let character = String.fromCharCode(i + 65);
-                    columns.push(<BoardLabel value={character} />);
+                    columns.push(<BoardLabel key={character} value={character} />);
                 }
                 rows.push(columns);
                 return rows.map(
